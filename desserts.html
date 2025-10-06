@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desserts - Flavor Haven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .filters {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            background: white;
+            border: 2px solid #fa709a;
+            color: #fa709a;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #fa709a;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(250, 112, 154, 0.3);
+        }
+
+        .recipes-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #fa709a;
+        }
+
+        .difficulty-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255,255,255,0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .easy { color: #43e97b; }
+        .medium { color: #fa709a; }
+        .advanced { color: #667eea; }
+
+        .recipe-content {
+            padding: 1.5rem;
+        }
+
+        .recipe-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: #333;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .recipe-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .recipe-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            background: #fff0f5;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #fa709a;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            margin-top: 4rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-btn {
+            padding: 1rem 2.5rem;
+            background: white;
+            color: #fa709a;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .tips-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            color: white;
+        }
+
+        .tips-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .tip-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tip-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">🍳 Flavor Haven</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#recipes">Recipes</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <h1>🍰 Desserts & Sweet Treats</h1>
+        <p>Indulge in heavenly desserts that satisfy every sweet craving</p>
+    </section>
+
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="cakes">Cakes</button>
+        <button class="filter-btn" data-filter="cookies">Cookies</button>
+        <button class="filter-btn" data-filter="frozen">Frozen</button>
+        <button class="filter-btn" data-filter="no-bake">No-Bake</button>
+        <button class="filter-btn" data-filter="chocolate">Chocolate</button>
+    </div>
+
+    <div class="recipes-container">
+        <div class="recipe-grid">
+            <div class="recipe-card" data-category="cakes chocolate">
+                <div class="recipe-image">
+                    🍫
+                    <span class="difficulty-badge medium">Medium</span>
+                    <span class="recipe-badge">Popular</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Classic Chocolate Cake</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 60 min</span>
+                        <span>👥 12 servings</span>
+                        <span>🔥 350°F</span>
+                    </div>
+                    <p class="recipe-description">Rich and moist chocolate cake with silky chocolate buttercream frosting. Perfect for celebrations!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cakes</span>
+                        <span class="tag">Chocolate</span>
+                        <span class="tag">Classic</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cookies">
+                <div class="recipe-image">
+                    🍪
+                    <span class="difficulty-badge easy">Easy</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Chocolate Chip Cookies</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 25 min</span>
+                        <span>👥 24 cookies</span>
+                        <span>🔥 375°F</span>
+                    </div>
+                    <p class="recipe-description">Perfectly chewy cookies loaded with chocolate chips. A timeless favorite that everyone loves!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cookies</span>
+                        <span class="tag">Quick</span>
+                        <span class="tag">Kid-Friendly</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="frozen">
+                <div class="recipe-image">
+                    🍨
+                    <span class="difficulty-badge easy">Easy</span>
+                    <span class="recipe-badge">Summer Favorite</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Homemade Vanilla Ice Cream</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 30 min + freeze</span>
+                        <span>👥 8 servings</span>
+                        <span>❄️ Frozen</span>
+                    </div>
+                    <p class="recipe-description">Creamy, dreamy vanilla ice cream made from scratch. Customize with your favorite mix-ins!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Frozen</span>
+                        <span class="tag">Summer</span>
+                        <span class="tag">Homemade</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="no-bake">
+                <div class="recipe-image">
+                    🥧
+                    <span class="difficulty-badge easy">Easy</span>
+                    <span class="recipe-badge">No-Bake</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Strawberry Cheesecake</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 20 min + chill</span>
+                        <span>👥 10 servings</span>
+                        <span>❄️ Refrigerate</span>
+                    </div>
+                    <p class="recipe-description">Light and creamy no-bake cheesecake topped with fresh strawberries and strawberry glaze.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">No-Bake</span>
+                        <span class="tag">Fruit</span>
+                        <span class="tag">Elegant</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cakes">
+                <div class="recipe-image">
+                    🍰
+                    <span class="difficulty-badge medium">Medium</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Red Velvet Cake</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 75 min</span>
+                        <span>👥 12 servings</span>
+                        <span>🔥 350°F</span>
+                    </div>
+                    <p class="recipe-description">Velvety smooth cake with a hint of cocoa, topped with luscious cream cheese frosting.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cakes</span>
+                        <span class="tag">Special Occasion</span>
+                        <span class="tag">Southern</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="chocolate no-bake">
+                <div class="recipe-image">
+                    🍫
+                    <span class="difficulty-badge easy">Easy</span>
+                    <span class="recipe-badge">Quick</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Chocolate Truffles</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 30 min + chill</span>
+                        <span>👥 20 truffles</span>
+                        <span>❄️ Refrigerate</span>
+                    </div>
+                    <p class="recipe-description">Decadent chocolate ganache rolled in cocoa powder. Perfect bite-sized indulgence!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Chocolate</span>
+                        <span class="tag">No-Bake</span>
+                        <span class="tag">Gifts</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cookies chocolate">
+                <div class="recipe-image">
+                    🍪
+                    <span class="difficulty-badge easy">Easy</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Double Chocolate Brownies</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 35 min</span>
+                        <span>👥 16 brownies</span>
+                        <span>🔥 350°F</span>
+                    </div>
+                    <p class="recipe-description">Fudgy brownies with chocolate chips throughout. Intense chocolate flavor in every bite!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Chocolate</span>
+                        <span class="tag">Fudgy</span>
+                        <span class="tag">Crowd-Pleaser</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="frozen">
+                <div class="recipe-image">
+                    🍦
+                    <span class="difficulty-badge medium">Medium</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Mango Sorbet</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 20 min + freeze</span>
+                        <span>👥 6 servings</span>
+                        <span>🌿 Vegan</span>
+                    </div>
+                    <p class="recipe-description">Refreshing and vibrant mango sorbet made with fresh mangoes. Light and naturally sweet!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Frozen</span>
+                        <span class="tag">Fruit</span>
+                        <span class="tag">Healthy</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cakes">
+                <div class="recipe-image">
+                    🧁
+                    <span class="difficulty-badge easy">Easy</span>
+                    <span class="recipe-badge">Party Ready</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Vanilla Cupcakes</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 30 min</span>
+                        <span>👥 12 cupcakes</span>
+                        <span>🔥 350°F</span>
+                    </div>
+                    <p class="recipe-description">Fluffy vanilla cupcakes with swirled buttercream frosting. Perfect for any celebration!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cakes</span>
+                        <span class="tag">Party</span>
+                        <span class="tag">Customizable</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="no-bake">
+                <div class="recipe-image">
+                    🥄
+                    <span class="difficulty-badge easy">Easy</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Tiramisu</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 30 min + chill</span>
+                        <span>👥 8 servings</span>
+                        <span>☕ Coffee</span>
+                    </div>
+                    <p class="recipe-description">Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">No-Bake</span>
+                        <span class="tag">Italian</span>
+                        <span class="tag">Coffee</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cookies">
+                <div class="recipe-image">
+                    🍪
+                    <span class="difficulty-badge medium">Medium</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">French Macarons</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 90 min</span>
+                        <span>👥 24 macarons</span>
+                        <span>🔥 300°F</span>
+                    </div>
+                    <p class="recipe-description">Delicate almond meringue cookies with smooth ganache filling. A French patisserie classic!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cookies</span>
+                        <span class="tag">French</span>
+                        <span class="tag">Elegant</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cakes chocolate">
+                <div class="recipe-image">
+                    🎂
+                    <span class="difficulty-badge advanced">Advanced</span>
+                    <span class="recipe-badge">Show Stopper</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Chocolate Lava Cake</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 25 min</span>
+                        <span>👥 4 servings</span>
+                        <span>🔥 425°F</span>
+                    </div>
+                    <p class="recipe-description">Individual chocolate cakes with molten chocolate centers. Serve warm with ice cream!</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cakes</span>
+                        <span class="tag">Chocolate</span>
+                        <span class="tag">Restaurant Quality</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="tips-section">
+        <h2>🎯 Baking Tips & Tricks</h2>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <h3>🌡️ Temperature Matters</h3>
+                <p>Always bring eggs and butter to room temperature for better mixing and texture in your baked goods.</p>
+            </div>
+            <div class="tip-card">
+                <h3>⚖️ Measure Accurately</h3>
+                <p>Use a kitchen scale for precise measurements, especially for flour and sugar, to ensure consistent results.</p>
+            </div>
+            <div class="tip-card">
+                <h3>🥄 Don't Overmix</h3>
+                <p>Mix just until ingredients are combined to avoid tough, dense cakes and cookies.</p>
+            </div>
+            <div class="tip-card">
+                <h3>🔥 Oven Temperature</h3>
+                <p>Use an oven thermometer to ensure accurate temperature. Most ovens run hot or cold.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Sweet Inspiration Awaits!</h2>
+        <p>Join our community and share your dessert creations</p>
+        <button class="cta-btn">Submit Your Recipe</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Flavor Haven. All rights reserved.</p>
+        <p>Made with ❤️ for food lovers everywhere</p>
+    </footer>
+
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const recipeCards = document.querySelectorAll('.recipe-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                recipeCards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 10);
+                    } else {
+                        const categories = card.dataset.category.split(' ');
+                        if (categories.includes(filter)) {
+                            card.style.display = 'block';
+                            setTimeout(() => card.style.opacity = '1', 10);
+                        } else {
+                            card.style.opacity = '0';
+                            setTimeout(() => card.style.display = 'none', 300);
+                        }
+                    }
+                });
+            });
+        });
+
+        recipeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.recipe-title').textContent;
+                alert(`Opening recipe: ${title}`);
+            });
+        });
+
+        document.querySelector('.cta-btn').addEventListener('click', () => {
+            alert('Recipe submission form would open here!');
+        });
+    </script>
+</body>
+</html>
