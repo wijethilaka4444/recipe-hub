@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appetizers - Flavor Haven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .filters {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .recipes-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .recipe-content {
+            padding: 1.5rem;
+        }
+
+        .recipe-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: #333;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .recipe-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .recipe-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            background: #f0f0f0;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            margin-top: 4rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-btn {
+            padding: 1rem 2.5rem;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">🍳 Flavor Haven</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#recipes">Recipes</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <h1>🥟 Appetizers & Starters</h1>
+        <p>Delicious bites to start your meal perfectly</p>
+    </section>
+
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="hot">Hot</button>
+        <button class="filter-btn" data-filter="cold">Cold</button>
+        <button class="filter-btn" data-filter="vegetarian">Vegetarian</button>
+        <button class="filter-btn" data-filter="quick">Quick & Easy</button>
+    </div>
+
+    <div class="recipes-container">
+        <div class="recipe-grid">
+            <div class="recipe-card" data-category="hot vegetarian">
+                <div class="recipe-image">
+                    🧀
+                    <span class="recipe-badge">Vegetarian</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Mozzarella Sticks</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 20 min</span>
+                        <span>👥 6 servings</span>
+                        <span>🔥 425°F</span>
+                    </div>
+                    <p class="recipe-description">Crispy golden breaded mozzarella with a gooey melted center, served with marinara sauce for dipping.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Hot</span>
+                        <span class="tag">Cheese</span>
+                        <span class="tag">Fried</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cold quick">
+                <div class="recipe-image">
+                    🦐
+                    <span class="recipe-badge">Quick</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Shrimp Cocktail</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 15 min</span>
+                        <span>👥 4 servings</span>
+                        <span>❄️ Chilled</span>
+                    </div>
+                    <p class="recipe-description">Perfectly cooked chilled shrimp served with zesty cocktail sauce and fresh lemon wedges.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cold</span>
+                        <span class="tag">Seafood</span>
+                        <span class="tag">Elegant</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="hot quick">
+                <div class="recipe-image">
+                    🥓
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Bacon-Wrapped Jalapeños</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 25 min</span>
+                        <span>👥 8 servings</span>
+                        <span>🔥 375°F</span>
+                    </div>
+                    <p class="recipe-description">Spicy jalapeños stuffed with cream cheese, wrapped in crispy bacon and baked to perfection.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Hot</span>
+                        <span class="tag">Spicy</span>
+                        <span class="tag">Party Food</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cold vegetarian quick">
+                <div class="recipe-image">
+                    🥑
+                    <span class="recipe-badge">Fresh</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Guacamole & Chips</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 10 min</span>
+                        <span>👥 6 servings</span>
+                        <span>🌿 Fresh</span>
+                    </div>
+                    <p class="recipe-description">Creamy homemade guacamole with fresh avocados, lime, cilantro, and tomatoes served with crispy tortilla chips.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cold</span>
+                        <span class="tag">Vegetarian</span>
+                        <span class="tag">Mexican</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="hot">
+                <div class="recipe-image">
+                    🍗
+                    <span class="recipe-badge">Popular</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Buffalo Wings</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 45 min</span>
+                        <span>👥 4 servings</span>
+                        <span>🔥 400°F</span>
+                    </div>
+                    <p class="recipe-description">Crispy chicken wings tossed in spicy buffalo sauce, served with cool ranch or blue cheese dressing.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Hot</span>
+                        <span class="tag">Spicy</span>
+                        <span class="tag">Classic</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cold vegetarian quick">
+                <div class="recipe-image">
+                    🧆
+                    <span class="recipe-badge">Healthy</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Hummus Platter</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 15 min</span>
+                        <span>👥 6 servings</span>
+                        <span>🌿 Vegan</span>
+                    </div>
+                    <p class="recipe-description">Smooth and creamy hummus served with fresh vegetables, olives, and warm pita bread.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cold</span>
+                        <span class="tag">Vegetarian</span>
+                        <span class="tag">Mediterranean</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="hot vegetarian">
+                <div class="recipe-image">
+                    🥟
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Spring Rolls</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 30 min</span>
+                        <span>👥 8 servings</span>
+                        <span>🔥 350°F</span>
+                    </div>
+                    <p class="recipe-description">Crispy fried spring rolls filled with vegetables and served with sweet chili dipping sauce.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Hot</span>
+                        <span class="tag">Asian</span>
+                        <span class="tag">Crispy</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="cold quick">
+                <div class="recipe-image">
+                    🧀
+                    <span class="recipe-badge">Elegant</span>
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Cheese & Charcuterie Board</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 20 min</span>
+                        <span>👥 8 servings</span>
+                        <span>🍷 Wine Pairing</span>
+                    </div>
+                    <p class="recipe-description">Artfully arranged selection of premium cheeses, cured meats, crackers, fruits, and nuts.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Cold</span>
+                        <span class="tag">Gourmet</span>
+                        <span class="tag">Party</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card" data-category="hot quick">
+                <div class="recipe-image">
+                    🦑
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Calamari Fritti</h3>
+                    <div class="recipe-meta">
+                        <span>⏱️ 20 min</span>
+                        <span>👥 4 servings</span>
+                        <span>🔥 Deep Fried</span>
+                    </div>
+                    <p class="recipe-description">Tender squid rings lightly breaded and fried until golden, served with lemon aioli.</p>
+                    <div class="recipe-tags">
+                        <span class="tag">Hot</span>
+                        <span class="tag">Seafood</span>
+                        <span class="tag">Italian</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <h2>Want to Submit Your Recipe?</h2>
+        <p>Share your favorite appetizer with our community!</p>
+        <button class="cta-btn">Submit Recipe</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Flavor Haven. All rights reserved.</p>
+        <p>Made with ❤️ for food lovers everywhere</p>
+    </footer>
+
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const recipeCards = document.querySelectorAll('.recipe-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                recipeCards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 10);
+                    } else {
+                        const categories = card.dataset.category.split(' ');
+                        if (categories.includes(filter)) {
+                            card.style.display = 'block';
+                            setTimeout(() => card.style.opacity = '1', 10);
+                        } else {
+                            card.style.opacity = '0';
+                            setTimeout(() => card.style.display = 'none', 300);
+                        }
+                    }
+                });
+            });
+        });
+
+        recipeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.recipe-title').textContent;
+                alert(`Opening recipe: ${title}`);
+            });
+        });
+
+        document.querySelector('.cta-btn').addEventListener('click', () => {
+            alert('Recipe submission form would open here!');
+        });
+    </script>
+</body>
+</html>
